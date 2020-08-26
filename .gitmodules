@@ -1,3 +1,6 @@
 [submodule "vendor/GameMath"]
 	path = vendor/GameMath
 	url = https://github.com/DragosPopse/GameMath.git
+[submodule "vendor/Odin"]
+	path = vendor/Odin
+	url = https://github.com/DragosPopse/Odin.git
