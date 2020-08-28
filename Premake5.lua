@@ -1,4 +1,4 @@
-workspace "ArcadeAirship"
+workspace "PaintTheCube"
     configurations
     {
         "Debug",
@@ -11,8 +11,8 @@ workspace "ArcadeAirship"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-project "ArcadeAirship"
-    kind "WindowApp"
+project "PaintTheCube"
+    kind "WindowedApp"
     language "C++"
     
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
@@ -23,11 +23,12 @@ project "ArcadeAirship"
         "%{prj.location}/src/**.cpp",
         "%{prj.location}/include/**.h",
         "%{prj.location}/include/**.hpp",
-        "%{prj.location}/rsc/resources.rc"
     }
     includedirs
     {
-        "%{prj.location}/include"
+        "%{prj.location}/include",
+        "%{prj.location}/vendor/Odin/Odin/include",
+        "%{prj.location}/vendor/Odin/external/GameMath/include"
     }
 
     filter "system:windows"
@@ -37,8 +38,8 @@ project "ArcadeAirship"
 
         postbuildcommands
         {
-            "copy /y %{cfg.architecture}\\*.dll bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\*.dll",
-            "Xcopy /E /I /y assets bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\assets"
+            "copy /y %{cfg.architecture}\\*.dll bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\PaintTheCube\\*.dll",
+            "Xcopy /E /I /y assets bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\PaintTheCube\\assets"
         }
 
         buildoptions { "/MP" }
@@ -47,14 +48,6 @@ project "ArcadeAirship"
     
     filter "platforms:Win64"
         architecture "x86_64"
-        links
-        {
-            "lua535_x64"
-        }
-        libdirs
-        {
-            "lib/x86_64"
-        }
         debugenvs 
         {
             "PATH=%PATH%;$(ProjectDir)/x86_64"
@@ -64,16 +57,24 @@ project "ArcadeAirship"
     filter "configurations:Debug"
         symbols "On"
         runtime "Debug"
-        links 
+        libdirs 
         {
-            
+            "%{prj.location}/vendor/Odin/Odin/bin/Debug-windows-x86_64/Odin"
+        }
+        links
+        {
+            "Odin.lib"
         }
 
     filter "configurations:Release"
         optimize "Full"
         runtime "Release"
+        libdirs
+        {
+            "%{prj.location}/vendor/Odin/Odin/bin/Release-windows-x86_64/Odin"
+        }
         links 
         {
-            
+            "Odin.lib"
         }
 
